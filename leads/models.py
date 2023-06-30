@@ -1,29 +1,48 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
 
 # Create your models here.
 
+
+
+#----- Get build in user model
+class User(AbstractUser):
+    pass
+
+
+
 class Lead(models.Model):
-
-
-    #----- Drop down option for source of data
-    SOURCE_CHOICES = (
-        ('Facebook', 'Facebook'),
-        ('Instagram','Instagram'),
-        ('Twitter', 'Twitter'),
-        ('LinkedIn', 'Linkedin'),
-        ('YouTube', 'YouTube'),
-        ('Google' , 'Google'),
-        ('WhatsApp' , 'WhatsApp'),    
-    )
 
     #--------------------------------------------------------------------------Create Columns
     #----- Basic User names
     first_name  :str    = models.CharField(max_length=40)
     last_name   :str    = models.CharField(max_length=30)
     age         :int    = models.IntegerField(default=0)
-    
-    called      :bool   = models.BooleanField(default=False)
-    source      :str    = models.CharField(choices=SOURCE_CHOICES, max_length=100)
 
-    profile_pricture = models.ImageField(blank=True, null=True) #Make PP optional
-    special_files = models.FileField(blank=True, null=True)
+    #----- link an agent to each lead created
+    agent = models.ForeignKey("Agent", on_delete=models.CASCADE)
+
+
+    #----- add a default viewing option when print the Agent class
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+
+
+class Agent(models.Model):
+
+    #----- decide what happens to an agent when a lead is deleted.
+    user = models.OneToOneField("User", on_delete=models.CASCADE)
+
+
+    #----- add a default viewing option when print the Agent class
+    def __str__(self):
+        return self.user.email
+
+
+
+
+
+
