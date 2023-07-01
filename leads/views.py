@@ -49,25 +49,16 @@ def lead_create(request):
 
 def lead_update(request, pk):
     lead = Lead.objects.get(id=pk)
-
-    form = LeadForm()
+    form = LeadModelForm(instance=lead)
 
     if request.method == "POST":        #Proccess the form
         print('Receiving a post request')
-        form = LeadForm(request.POST)
+        form = LeadModelForm(request.POST, instance=lead)
 
         if form.is_valid():
-            print("Valid Update form")
+            print("The form is valid")
 
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            age = form.cleaned_data['age']
-         
-
-            lead.first_name = first_name
-            lead.last_name = last_name
-            lead.age = age
-            lead.save()
+            form.save()
 
             print("Lead has been created")
             return redirect(f"/leads/{pk}")
@@ -78,3 +69,10 @@ def lead_update(request, pk):
         "lead":lead
     }
     return render(request, "leads/lead_update.html", context)
+
+
+
+def lead_delete(request, pk):
+    lead = Lead.objects.get(id=pk)
+    lead.delete()
+    return redirect("/leads/")
