@@ -4,21 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bemocrm</title>
-    <style>
-        .lead{
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 6px;
-            padding: 6px;
-            margin-top: 10px;
-            background-color: rgb(199, 191, 191);
-            width: 100%;
-        }
-    </style>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-    {% block content %}
+    <div class = "max-w-7xl mx-auto">
+        {% include 'nav_bar.html' %}
+        {% block content %}
 
-    {% endblock content %}
+        {% endblock content %}
 </body>
 </html>
